@@ -1,80 +1,21 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 
+import "@openzeppelin/contracts/interfaces/IERC20.sol";
+import "@openzeppelin/contracts/interfaces/IERC20Metadata.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol";
+
+
 import "./utils/MetaContext.sol";
 import "./interfaces/ITrading.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "./interfaces/ITradingExtension.sol";
+import "./interfaces/IStableToken.sol";
 import "./interfaces/IPairsContract.sol";
 import "./interfaces/IReferrals.sol";
 import "./interfaces/IPosition.sol";
 import "./interfaces/IGovNFT.sol";
 import "./interfaces/IStableVault.sol";
 import "./utils/TradingLibrary.sol";
-
-interface ITradingExtension {
-    function getVerifiedPrice(
-        uint _asset,
-        PriceData calldata _priceData,
-        bytes calldata _signature,
-        uint _withSpreadIsLong
-    ) external returns(uint256 _price, uint256 _spread);
-    function getRef(
-        address _trader
-    ) external pure returns(address);
-    function _setReferral(
-        bytes32 _referral,
-        address _trader
-    ) external;
-    function validateTrade(uint _asset, address _tigAsset, uint _margin, uint _leverage) external view;
-    function isPaused() external view returns(bool);
-    function minPos(address) external view returns(uint);
-    function modifyLongOi(
-        uint _asset,
-        address _tigAsset,
-        bool _onOpen,
-        uint _size
-    ) external;
-    function modifyShortOi(
-        uint _asset,
-        address _tigAsset,
-        bool _onOpen,
-        uint _size
-    ) external;
-    function paused() external returns(bool);
-    function _limitClose(
-        uint _id,
-        bool _tp,
-        PriceData calldata _priceData,
-        bytes calldata _signature
-    ) external returns(uint _limitPrice, address _tigAsset);
-    function _checkGas() external view;
-    function _closePosition(
-        uint _id,
-        uint _price,
-        uint _percent
-    ) external returns (IPosition.Trade memory _trade, uint256 _positionSize, int256 _payout);
-}
-
-interface IStable is IERC20 {
-    function burnFrom(address account, uint amount) external;
-    function mintFor(address account, uint amount) external;
-}
-
-interface ExtendedIERC20 is IERC20 {
-    function decimals() external view returns (uint);
-}
-
-interface ERC20Permit is IERC20 {
-    function permit(
-        address owner,
-        address spender,
-        uint256 value,
-        uint256 deadline,
-        uint8 v,
-        bytes32 r,
-        bytes32 s
-    ) external;
-}
 
 contract Trading is MetaContext, ITrading {
 
@@ -362,7 +303,7 @@ contract Trading is MetaContext, ITrading {
         _checkOwner(_id, _trader);
         IPosition.Trade memory _trade = position.trades(_id);
         if (_trade.orderType == 0) revert();
-        IStable(_trade.tigAsset).mintFor(_trader, _trade.margin);
+        IStableToken(_trade.tigAsset).mintFor(_trader, _trade.margin);
         position.burn(_id);
         emit LimitCancelled(_id, _trader);
     }
@@ -641,13 +582,13 @@ contract Trading is MetaContext, ITrading {
      * @param _trader Trader address to take tokens from
      */
     function _handleDeposit(address _tigAsset, address _marginAsset, uint256 _margin, address _stableVault, ERC20PermitData calldata _permitData, address _trader) internal {
-        IStable tigAsset = IStable(_tigAsset);
+        IStableToken tigAsset = IStableToken(_tigAsset);
         if (_tigAsset != _marginAsset) {
             if (_permitData.usePermit) {
-                ERC20Permit(_marginAsset).permit(_trader, address(this), _permitData.amount, _permitData.deadline, _permitData.v, _permitData.r, _permitData.s);
+                IERC20Permit(_marginAsset).permit(_trader, address(this), _permitData.amount, _permitData.deadline, _permitData.v, _permitData.r, _permitData.s);
             }
             uint256 _balBefore = tigAsset.balanceOf(address(this));
-            uint _marginDecMultiplier = 10**(18-ExtendedIERC20(_marginAsset).decimals());
+            uint _marginDecMultiplier = 10**(18-IERC20Metadata(_marginAsset).decimals());
             IERC20(_marginAsset).transferFrom(_trader, address(this), _margin/_marginDecMultiplier);
             IERC20(_marginAsset).approve(_stableVault, type(uint).max);
             IStableVault(_stableVault).deposit(_marginAsset, _margin/_marginDecMultiplier);
@@ -666,13 +607,13 @@ contract Trading is MetaContext, ITrading {
      * @param _toMint Amount of tigAsset minted to be used for withdrawal
      */
     function _handleWithdraw(IPosition.Trade memory _trade, address _stableVault, address _outputToken, uint _toMint) internal {
-        IStable(_trade.tigAsset).mintFor(address(this), _toMint);
+        IStableToken(_trade.tigAsset).mintFor(address(this), _toMint);
         if (_outputToken == _trade.tigAsset) {
             IERC20(_outputToken).transfer(_trade.trader, _toMint);
         } else {
             uint256 _balBefore = IERC20(_outputToken).balanceOf(address(this));
             IStableVault(_stableVault).withdraw(_outputToken, _toMint);
-            if (IERC20(_outputToken).balanceOf(address(this)) != _balBefore + _toMint/(10**(18-ExtendedIERC20(_outputToken).decimals()))) revert BadWithdraw();
+            if (IERC20(_outputToken).balanceOf(address(this)) != _balBefore + _toMint/(10**(18-IERC20Metadata(_outputToken).decimals()))) revert BadWithdraw();
             IERC20(_outputToken).transfer(_trade.trader, IERC20(_outputToken).balanceOf(address(this)) - _balBefore);
         }        
     }
@@ -707,7 +648,7 @@ contract Trading is MetaContext, ITrading {
         address _referrer = tradingExtension.getRef(_trader); //referrals.getReferral(referrals.getReferred(_trader));
         if (_referrer != address(0)) {
             unchecked {
-                IStable(_tigAsset).mintFor(
+                IStableToken(_tigAsset).mintFor(
                     _referrer,
                     _positionSize
                     * _fees.referralFees // get referral fee%
@@ -718,7 +659,7 @@ contract Trading is MetaContext, ITrading {
         }
         if (_isBot) {
             unchecked {
-                IStable(_tigAsset).mintFor(
+                IStableToken(_tigAsset).mintFor(
                     _msgSender(),
                     _positionSize
                     * _fees.botFees // get bot fee%
@@ -744,9 +685,9 @@ contract Trading is MetaContext, ITrading {
                 _positionSize * _fees.botFees / DIVISION_CONSTANT,
                 _referrer
             );
-            IStable(_tigAsset).mintFor(address(this), _daoFeesPaid);
+            IStableToken(_tigAsset).mintFor(address(this), _daoFeesPaid);
         }
-        gov.distribute(_tigAsset, IStable(_tigAsset).balanceOf(address(this)));
+        gov.distribute(_tigAsset, IStableToken(_tigAsset).balanceOf(address(this)));
     }
 
     /**
@@ -785,7 +726,7 @@ contract Trading is MetaContext, ITrading {
             unchecked {
                 _referralFeesPaid = (_positionSize*_fees.referralFees/DIVISION_CONSTANT)*asset.feeMultiplier/DIVISION_CONSTANT;
             }
-            IStable(_tigAsset).mintFor(
+            IStableToken(_tigAsset).mintFor(
                 _referrer,
                 _referralFeesPaid
             );
@@ -794,7 +735,7 @@ contract Trading is MetaContext, ITrading {
         if (_isBot) {
             unchecked {
                 _botFeesPaid = (_positionSize*_fees.botFees/DIVISION_CONSTANT)*asset.feeMultiplier/DIVISION_CONSTANT;
-                IStable(_tigAsset).mintFor(
+                IStableToken(_tigAsset).mintFor(
                     _msgSender(),
                     _botFeesPaid
                 );
@@ -803,8 +744,8 @@ contract Trading is MetaContext, ITrading {
         }
         emit FeesDistributed(_tigAsset, _daoFeesPaid, _burnFeesPaid, _referralFeesPaid, _botFeesPaid, _referrer);
         payout_ = _payout - _daoFeesPaid - _burnFeesPaid - _botFeesPaid;
-        IStable(_tigAsset).mintFor(address(this), _daoFeesPaid);
-        IStable(_tigAsset).approve(address(gov), type(uint).max);
+        IStableToken(_tigAsset).mintFor(address(this), _daoFeesPaid);
+        IStableToken(_tigAsset).approve(address(gov), type(uint).max);
         gov.distribute(_tigAsset, _daoFeesPaid);
         return payout_;
     }

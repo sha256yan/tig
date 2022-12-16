@@ -1,0 +1,425 @@
+strict digraph {
+subgraph cluster_4993_ECDSA {
+label = "ECDSA"
+"4993__throwError" [label="_throwError"]
+"4993_tryRecover" [label="tryRecover"]
+"4993_toTypedDataHash" [label="toTypedDataHash"]
+"4993_toEthSignedMessageHash" [label="toEthSignedMessageHash"]
+"4993_recover" [label="recover"]
+"4993_recover" -> "4993_tryRecover"
+"4993_tryRecover" -> "4993_tryRecover"
+"4993_recover" -> "4993__throwError"
+}subgraph cluster_3969_MetaContext {
+label = "MetaContext"
+"3969_setTrustedForwarder" [label="setTrustedForwarder"]
+"3969__msgSender" [label="_msgSender"]
+"3969__msgData" [label="_msgData"]
+"3969_isTrustedForwarder" [label="isTrustedForwarder"]
+"3969__msgData" -> "3969__msgData"
+"3969_setTrustedForwarder" -> "3969_onlyOwner"
+"3969__msgSender" -> "3969__msgSender"
+}subgraph cluster_3984_IPrice {
+label = "IPrice"
+"3984_decimals" [label="decimals"]
+"3984_latestAnswer" [label="latestAnswer"]
+}subgraph cluster_3218_IGovNFT {
+label = "IGovNFT"
+"3218_safeTransferMany" [label="safeTransferMany"]
+"3218_pending" [label="pending"]
+"3218_claim" [label="claim"]
+"3218_distribute" [label="distribute"]
+}subgraph cluster_5015_Context {
+label = "Context"
+"5015__msgData" [label="_msgData"]
+"5015__msgSender" [label="_msgSender"]
+}subgraph cluster_4632_Ownable {
+label = "Ownable"
+"4632__transferOwnership" [label="_transferOwnership"]
+"4632_renounceOwnership" [label="renounceOwnership"]
+"4632_owner" [label="owner"]
+"4632_constructor" [label="constructor"]
+"4632_transferOwnership" [label="transferOwnership"]
+"4632__checkOwner" [label="_checkOwner"]
+"4632__checkOwner" -> "4632_owner"
+"4632_renounceOwnership" -> "4632__transferOwnership"
+"4632__checkOwner" -> "4632__msgSender"
+"4632_transferOwnership" -> "4632__transferOwnership"
+"4632_constructor" -> "4632__msgSender"
+"4632_constructor" -> "4632__transferOwnership"
+"4632_transferOwnership" -> "4632_onlyOwner"
+"4632_renounceOwnership" -> "4632_onlyOwner"
+}subgraph cluster_3491_IPosition {
+label = "IPosition"
+"3491_limitOrderIndexes" [label="limitOrderIndexes"]
+"3491_ownerOf" [label="ownerOf"]
+"3491_addToPosition" [label="addToPosition"]
+"3491_assetOpenPositions" [label="assetOpenPositions"]
+"3491_mint" [label="mint"]
+"3491_setAccInterest" [label="setAccInterest"]
+"3491_assetOpenPositionsIndexes" [label="assetOpenPositionsIndexes"]
+"3491_executeLimitOrder" [label="executeLimitOrder"]
+"3491_trades" [label="trades"]
+"3491_updateFunding" [label="updateFunding"]
+"3491_assetOpenPositionsLength" [label="assetOpenPositionsLength"]
+"3491_modifySl" [label="modifySl"]
+"3491_limitOrders" [label="limitOrders"]
+"3491_burn" [label="burn"]
+"3491_reducePosition" [label="reducePosition"]
+"3491_getCount" [label="getCount"]
+"3491_modifyTp" [label="modifyTp"]
+"3491_limitOrdersLength" [label="limitOrdersLength"]
+"3491_modifyMargin" [label="modifyMargin"]
+}subgraph cluster_4519_IERC20 {
+label = "IERC20"
+"4519_transfer" [label="transfer"]
+"4519_totalSupply" [label="totalSupply"]
+"4519_approve" [label="approve"]
+"4519_transferFrom" [label="transferFrom"]
+"4519_balanceOf" [label="balanceOf"]
+"4519_allowance" [label="allowance"]
+}subgraph cluster_6055_Math {
+label = "Math"
+"6055_log256" [label="log256"]
+"6055_sqrt" [label="sqrt"]
+"6055_min" [label="min"]
+"6055_log10" [label="log10"]
+"6055_log2" [label="log2"]
+"6055_mulDiv" [label="mulDiv"]
+"6055_average" [label="average"]
+"6055_ceilDiv" [label="ceilDiv"]
+"6055_max" [label="max"]
+"6055_log2" -> "6055_log2"
+"6055_mulDiv" -> "6055_mulDiv"
+"6055_log256" -> "6055_log256"
+"6055_sqrt" -> "6055_min"
+"6055_log10" -> "6055_log10"
+"6055_sqrt" -> "6055_log2"
+"6055_sqrt" -> "6055_sqrt"
+}subgraph cluster_3885_ITradingExtension {
+label = "ITradingExtension"
+"3885__setReferral" [label="_setReferral"]
+"3885_minPos" [label="minPos"]
+"3885_paused" [label="paused"]
+"3885_isPaused" [label="isPaused"]
+"3885_validateTrade" [label="validateTrade"]
+"3885__closePosition" [label="_closePosition"]
+"3885_modifyShortOi" [label="modifyShortOi"]
+"3885__checkGas" [label="_checkGas"]
+"3885_modifyLongOi" [label="modifyLongOi"]
+"3885_getVerifiedPrice" [label="getVerifiedPrice"]
+"3885__limitClose" [label="_limitClose"]
+"3885_getRef" [label="getRef"]
+}subgraph cluster_3766_ITrading {
+label = "ITrading"
+"3766_cancelLimitOrder" [label="cancelLimitOrder"]
+"3766_limitClose" [label="limitClose"]
+"3766_addToPosition" [label="addToPosition"]
+"3766_updateTpSl" [label="updateTpSl"]
+"3766_initiateLimitOrder" [label="initiateLimitOrder"]
+"3766_removeMargin" [label="removeMargin"]
+"3766_addMargin" [label="addMargin"]
+"3766_executeLimitOrder" [label="executeLimitOrder"]
+"3766_initiateMarketOrder" [label="initiateMarketOrder"]
+"3766_initiateCloseOrder" [label="initiateCloseOrder"]
+"3766_liquidatePosition" [label="liquidatePosition"]
+}subgraph cluster_3133_Trading {
+label = "Trading"
+"3133_setFees" [label="setFees"]
+"3133_addMargin" [label="addMargin"]
+"3133__checkSl" [label="_checkSl"]
+"3133__handleWithdraw" [label="_handleWithdraw"]
+"3133_initiateCloseOrder" [label="initiateCloseOrder"]
+"3133__checkDelay" [label="_checkDelay"]
+"3133_addToPosition" [label="addToPosition"]
+"3133__checkVault" [label="_checkVault"]
+"3133_removeMargin" [label="removeMargin"]
+"3133__updateFunding" [label="_updateFunding"]
+"3133__handleDeposit" [label="_handleDeposit"]
+"3133_cancelLimitOrder" [label="cancelLimitOrder"]
+"3133_approveProxy" [label="approveProxy"]
+"3133_liquidatePosition" [label="liquidatePosition"]
+"3133_setTradingExtension" [label="setTradingExtension"]
+"3133_setMaxWinPercent" [label="setMaxWinPercent"]
+"3133_limitClose" [label="limitClose"]
+"3133__handleOpenFees" [label="_handleOpenFees"]
+"3133__checkOwner" [label="_checkOwner"]
+"3133__handleCloseFees" [label="_handleCloseFees"]
+"3133_executeLimitOrder" [label="executeLimitOrder"]
+"3133_setLimitOrderPriceRange" [label="setLimitOrderPriceRange"]
+"3133_initiateMarketOrder" [label="initiateMarketOrder"]
+"3133_initiateLimitOrder" [label="initiateLimitOrder"]
+"3133_constructor" [label="constructor"]
+"3133__closePosition" [label="_closePosition"]
+"3133__validateProxy" [label="_validateProxy"]
+"3133_setAllowedVault" [label="setAllowedVault"]
+"3133_updateTpSl" [label="updateTpSl"]
+"3133_setBlockDelay" [label="setBlockDelay"]
+"3133_initiateMarketOrder" -> "3133__checkVault"
+"3133_removeMargin" -> "3133__handleWithdraw"
+"3133_initiateMarketOrder" -> "3133__validateProxy"
+"3133_addMargin" -> "3133__checkVault"
+"3133__closePosition" -> "3133__updateFunding"
+"3133_setLimitOrderPriceRange" -> "3133_onlyOwner"
+"3133_liquidatePosition" -> "3133__handleCloseFees"
+"3133_setMaxWinPercent" -> "3133_onlyOwner"
+"3133_addToPosition" -> "3133__updateFunding"
+"3133_initiateMarketOrder" -> "3133__handleOpenFees"
+"3133__closePosition" -> "3133__handleCloseFees"
+"3133__closePosition" -> "3133__msgSender"
+"3133_initiateMarketOrder" -> "3133__handleDeposit"
+"3133_addToPosition" -> "3133__checkVault"
+"3133_initiateCloseOrder" -> "3133__validateProxy"
+"3133_addMargin" -> "3133__handleDeposit"
+"3133_initiateCloseOrder" -> "3133__checkDelay"
+"3133_initiateCloseOrder" -> "3133__closePosition"
+"3133_addToPosition" -> "3133__validateProxy"
+"3133_addMargin" -> "3133__checkOwner"
+"3133_initiateCloseOrder" -> "3133__checkVault"
+"3133_executeLimitOrder" -> "3133__msgSender"
+"3133_limitClose" -> "3133__checkDelay"
+"3133_initiateMarketOrder" -> "3133__checkDelay"
+"3133__handleOpenFees" -> "3133__msgSender"
+"3133_approveProxy" -> "3133__msgSender"
+"3133_executeLimitOrder" -> "3133__updateFunding"
+"3133_initiateLimitOrder" -> "3133__checkSl"
+"3133_setTradingExtension" -> "3133_onlyOwner"
+"3133_addToPosition" -> "3133__checkOwner"
+"3133_cancelLimitOrder" -> "3133__checkOwner"
+"3133_executeLimitOrder" -> "3133__checkDelay"
+"3133_liquidatePosition" -> "3133__updateFunding"
+"3133_cancelLimitOrder" -> "3133__validateProxy"
+"3133_addToPosition" -> "3133__handleOpenFees"
+"3133_removeMargin" -> "3133__checkVault"
+"3133_updateTpSl" -> "3133__checkOwner"
+"3133__validateProxy" -> "3133__msgSender"
+"3133_initiateLimitOrder" -> "3133__checkVault"
+"3133_liquidatePosition" -> "3133__msgSender"
+"3133_updateTpSl" -> "3133__checkSl"
+"3133_setAllowedVault" -> "3133_onlyOwner"
+"3133_setFees" -> "3133_onlyOwner"
+"3133__closePosition" -> "3133__handleWithdraw"
+"3133__handleCloseFees" -> "3133__msgSender"
+"3133_addToPosition" -> "3133__handleDeposit"
+"3133_initiateMarketOrder" -> "3133__checkSl"
+"3133_initiateMarketOrder" -> "3133__updateFunding"
+"3133_removeMargin" -> "3133__validateProxy"
+"3133_initiateLimitOrder" -> "3133__validateProxy"
+"3133_initiateLimitOrder" -> "3133__handleDeposit"
+"3133_addToPosition" -> "3133__checkDelay"
+"3133_setBlockDelay" -> "3133_onlyOwner"
+"3133_updateTpSl" -> "3133__validateProxy"
+"3133_executeLimitOrder" -> "3133__handleOpenFees"
+"3133_initiateCloseOrder" -> "3133__checkOwner"
+"3133_limitClose" -> "3133__closePosition"
+"3133_addMargin" -> "3133__validateProxy"
+"3133_removeMargin" -> "3133__checkOwner"
+}subgraph cluster_3520_IReferrals {
+label = "IReferrals"
+"3520_getReferred" [label="getReferred"]
+"3520_getReferral" [label="getReferral"]
+"3520_createReferralCode" [label="createReferralCode"]
+"3520_setReferred" [label="setReferred"]
+}subgraph cluster_5190_Strings {
+label = "Strings"
+"5190_toString" [label="toString"]
+"5190_toHexString" [label="toHexString"]
+"5190_toHexString" -> "5190_toHexString"
+}subgraph cluster_3144_ExtendedIERC20 {
+label = "ExtendedIERC20"
+"3144_decimals" [label="decimals"]
+}subgraph cluster_3540_IStableToken {
+label = "IStableToken"
+"3540_burnFrom" [label="burnFrom"]
+"3540_mintFor" [label="mintFor"]
+}subgraph cluster_4441_TradingLibrary {
+label = "TradingLibrary"
+"4441_pnl" [label="pnl"]
+"4441_verifyPrice" [label="verifyPrice"]
+"4441_liqPrice" [label="liqPrice"]
+"4441_getLiqPrice" [label="getLiqPrice"]
+"4441_getLiqPrice" -> "4441_liqPrice"
+}subgraph cluster_3164_ERC20Permit {
+label = "ERC20Permit"
+"3164_permit" [label="permit"]
+}subgraph cluster_3295_IPairsContract {
+label = "IPairsContract"
+"3295_setAssetBaseFundingRate" [label="setAssetBaseFundingRate"]
+"3295_modifyLongOi" [label="modifyLongOi"]
+"3295_idToAsset" [label="idToAsset"]
+"3295_idToOi" [label="idToOi"]
+"3295_allowedAsset" [label="allowedAsset"]
+"3295_modifyShortOi" [label="modifyShortOi"]
+}subgraph cluster_3186_IERC20Mintable {
+label = "IERC20Mintable"
+"3186_mintFor" [label="mintFor"]
+"3186_burnFrom" [label="burnFrom"]
+"3186_decimals" [label="decimals"]
+}subgraph cluster_3571_IStableVault {
+label = "IStableVault"
+"3571_stable" [label="stable"]
+"3571_withdraw" [label="withdraw"]
+"3571_deposit" [label="deposit"]
+"3571_allowed" [label="allowed"]
+}subgraph cluster_solidity {
+label = "[Solidity]"
+"revert NoPrice()" 
+"calldataload(uint256)" 
+"revert NotLiquidatable()" 
+"revert()" 
+"mulmod(uint256,uint256,uint256)" 
+"ecrecover(bytes32,uint8,bytes32,bytes32)" 
+"mstore8(uint256,uint256)" 
+"calldatasize()" 
+"require(bool)" 
+"revert BadWithdraw()" 
+"revert TradingPaused()" 
+"revert BadClosePercent()" 
+"abi.encode()" 
+"keccak256(bytes)" 
+"require(bool,string)" 
+"abi.encodePacked()" 
+"revert(string)" 
+"revert LiqThreshold()" 
+"byte(uint256,uint256)" 
+"revert BadDeposit()" 
+"mload(uint256)" 
+"3133__handleWithdraw" -> "revert BadWithdraw()"
+"4441_verifyPrice" -> "abi.encode()"
+"3969__msgSender" -> "calldatasize()"
+"3133__handleDeposit" -> "revert BadDeposit()"
+"3133_setFees" -> "require(bool)"
+"3133_addMargin" -> "revert(string)"
+"4993_tryRecover" -> "byte(uint256,uint256)"
+"4441_verifyPrice" -> "require(bool,string)"
+"3133__checkDelay" -> "revert(string)"
+"6055_mulDiv" -> "mulmod(uint256,uint256,uint256)"
+"3133_updateTpSl" -> "revert(string)"
+"4993__throwError" -> "revert(string)"
+"3133_cancelLimitOrder" -> "revert()"
+"4993_tryRecover" -> "mload(uint256)"
+"6055_mulDiv" -> "require(bool)"
+"3133_initiateLimitOrder" -> "revert(string)"
+"3133__validateProxy" -> "require(bool,string)"
+"4441_verifyPrice" -> "keccak256(bytes)"
+"3133_liquidatePosition" -> "revert NotLiquidatable()"
+"3133_initiateLimitOrder" -> "revert NoPrice()"
+"4632_transferOwnership" -> "require(bool,string)"
+"4993_tryRecover" -> "ecrecover(bytes32,uint8,bytes32,bytes32)"
+"3133_addMargin" -> "revert()"
+"3133_removeMargin" -> "revert(string)"
+"3133_executeLimitOrder" -> "revert(string)"
+"5190_toHexString" -> "require(bool,string)"
+"4993_toTypedDataHash" -> "abi.encodePacked()"
+"5190_toString" -> "byte(uint256,uint256)"
+"3133_removeMargin" -> "revert()"
+"3133_initiateCloseOrder" -> "revert BadClosePercent()"
+"3133__checkVault" -> "require(bool,string)"
+"4993_toEthSignedMessageHash" -> "abi.encodePacked()"
+"3133__closePosition" -> "revert(string)"
+"3133_liquidatePosition" -> "revert(string)"
+"3133_removeMargin" -> "revert LiqThreshold()"
+"3133__checkSl" -> "revert(string)"
+"3133_initiateCloseOrder" -> "revert(string)"
+"4632__checkOwner" -> "require(bool,string)"
+"5190_toString" -> "mstore8(uint256,uint256)"
+"3133_addToPosition" -> "revert(string)"
+"4993_toEthSignedMessageHash" -> "keccak256(bytes)"
+"3133__checkOwner" -> "revert(string)"
+"4993_toTypedDataHash" -> "keccak256(bytes)"
+"3969__msgSender" -> "calldataload(uint256)"
+"3133_executeLimitOrder" -> "require(bool)"
+"3133_executeLimitOrder" -> "revert TradingPaused()"
+}"3133_addToPosition" -> "3885_modifyShortOi"
+"3133_removeMargin" -> "3491_trades"
+"3133_addToPosition" -> "3885_modifyLongOi"
+"3133_cancelLimitOrder" -> "3540_mintFor"
+"3133__checkOwner" -> "3491_ownerOf"
+"3133__handleDeposit" -> "3540_burnFrom"
+"3133_liquidatePosition" -> "3491_trades"
+"3133__closePosition" -> "3491_reducePosition"
+"3133__handleOpenFees" -> "3540_mintFor"
+"3133_liquidatePosition" -> "3885__checkGas"
+"3133__handleWithdraw" -> "3571_withdraw"
+"3133_initiateMarketOrder" -> "3885__setReferral"
+"3133_initiateLimitOrder" -> "3491_mint"
+"3133_addToPosition" -> "3491_setAccInterest"
+"3133__handleOpenFees" -> "3885_getRef"
+"3133_executeLimitOrder" -> "3491_executeLimitOrder"
+"3133_initiateMarketOrder" -> "3491_getCount"
+"3133_executeLimitOrder" -> "3885__checkGas"
+"3133_liquidatePosition" -> "3885_modifyShortOi"
+"3133_initiateMarketOrder" -> "3885_modifyShortOi"
+"3133__closePosition" -> "3491_setAccInterest"
+"3133_addToPosition" -> "3491_addToPosition"
+"3133__handleWithdraw" -> "3144_decimals"
+"3133__handleCloseFees" -> "3540_approve"
+"3133_removeMargin" -> "3491_modifyMargin"
+"3133_executeLimitOrder" -> "3885_paused"
+"3133_removeMargin" -> "3295_idToAsset"
+"3133_updateTpSl" -> "3491_modifyTp"
+"3133_executeLimitOrder" -> "3885_getVerifiedPrice"
+"3133_initiateCloseOrder" -> "3491_trades"
+"3133__handleOpenFees" -> "3295_idToAsset"
+"3133__handleDeposit" -> "4519_transferFrom"
+"3133_liquidatePosition" -> "3491_burn"
+"3133_addMargin" -> "3491_modifyMargin"
+"3133__handleCloseFees" -> "3885_getRef"
+"3133_initiateLimitOrder" -> "3885__setReferral"
+"3133__closePosition" -> "3885_minPos"
+"4993_toEthSignedMessageHash" -> "5190_toString"
+"3133__handleDeposit" -> "4519_approve"
+"3133_addToPosition" -> "3885_getVerifiedPrice"
+"3133__updateFunding" -> "3491_updateFunding"
+"3133_liquidatePosition" -> "3885_modifyLongOi"
+"3133_removeMargin" -> "3885_getVerifiedPrice"
+"3133_updateTpSl" -> "3885_getVerifiedPrice"
+"3133__updateFunding" -> "3295_idToAsset"
+"3133_initiateMarketOrder" -> "3885_validateTrade"
+"3133_liquidatePosition" -> "4441_pnl"
+"3133_updateTpSl" -> "3491_modifySl"
+"3133__handleDeposit" -> "3571_deposit"
+"5190_toString" -> "6055_log10"
+"3133__handleDeposit" -> "3164_permit"
+"3133_addToPosition" -> "3491_trades"
+"3133_liquidatePosition" -> "3885_getVerifiedPrice"
+"3133_addToPosition" -> "3885_validateTrade"
+"3133_executeLimitOrder" -> "3885_modifyLongOi"
+"3133_initiateLimitOrder" -> "3571_stable"
+"3133__handleWithdraw" -> "4519_balanceOf"
+"3133__updateFunding" -> "3295_idToOi"
+"3133__closePosition" -> "3491_burn"
+"3133_removeMargin" -> "4441_pnl"
+"3133_executeLimitOrder" -> "3491_trades"
+"4441_getLiqPrice" -> "3491_trades"
+"3133__handleWithdraw" -> "4519_transfer"
+"4441_verifyPrice" -> "3984_latestAnswer"
+"4441_verifyPrice" -> "4993_toEthSignedMessageHash"
+"3133__handleOpenFees" -> "3540_balanceOf"
+"3133_cancelLimitOrder" -> "3491_burn"
+"3133_addMargin" -> "3295_idToAsset"
+"3133_initiateMarketOrder" -> "3885_modifyLongOi"
+"3133_updateTpSl" -> "3491_trades"
+"3133_initiateCloseOrder" -> "3885_getVerifiedPrice"
+"3133_initiateLimitOrder" -> "3885_validateTrade"
+"3133__handleDeposit" -> "3144_decimals"
+"3133_initiateMarketOrder" -> "3491_mint"
+"3133__handleOpenFees" -> "3218_distribute"
+"3133_initiateMarketOrder" -> "3885_getVerifiedPrice"
+"3133__checkVault" -> "3571_stable"
+"3133_addMargin" -> "3491_trades"
+"3133_limitClose" -> "3885__limitClose"
+"3133_cancelLimitOrder" -> "3491_trades"
+"3133__closePosition" -> "3885__closePosition"
+"3133__handleCloseFees" -> "3295_idToAsset"
+"3133__handleCloseFees" -> "3540_mintFor"
+"3133__checkVault" -> "3571_allowed"
+"3133__handleWithdraw" -> "3540_mintFor"
+"3133_initiateLimitOrder" -> "3491_getCount"
+"3133_initiateMarketOrder" -> "3571_stable"
+"3133__handleCloseFees" -> "3218_distribute"
+"3133__handleDeposit" -> "3540_balanceOf"
+"3133_executeLimitOrder" -> "3885_modifyShortOi"
+"4441_verifyPrice" -> "3984_decimals"
+"5190_toHexString" -> "6055_log256"
+"4441_verifyPrice" -> "4993_recover"
+}

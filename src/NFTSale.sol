@@ -2,17 +2,12 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/interfaces/IERC20.sol";
 
 interface IERC721 {
     function balanceOf(address) external view returns (uint256);
     function safeTransferMany(address, uint[] memory) external;
     function claim(address) external;
-}
-
-interface IERC20 {
-    function balanceOf(address) external view returns (uint256);
-    function transfer(address, uint) external;
-    function transferFrom(address, address, uint) external;
 }
 
 contract NFTSale is Ownable {

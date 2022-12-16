@@ -1,28 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/interfaces/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol";
+
 import "./utils/MetaContext.sol";
+import "./interfaces/IERC20Mintable.sol";
 import "./interfaces/IStableVault.sol";
-
-interface IERC20Mintable is IERC20 {
-    function mintFor(address, uint256) external;
-    function burnFrom(address, uint256) external;
-    function decimals() external view returns (uint);
-}
-
-interface ERC20Permit is IERC20 {
-    function permit(
-        address owner,
-        address spender,
-        uint256 value,
-        uint256 deadline,
-        uint8 v,
-        bytes32 r,
-        bytes32 s
-    ) external;
-}
 
 contract StableVault is MetaContext, IStableVault {
 
@@ -53,7 +38,7 @@ contract StableVault is MetaContext, IStableVault {
     function depositWithPermit(address _token, uint256 _amount, uint256 _deadline, bool _permitMax, uint8 v, bytes32 r, bytes32 s) external {
         uint _toAllow = _amount;
         if (_permitMax) _toAllow = type(uint).max;
-        ERC20Permit(_token).permit(_msgSender(), address(this), _toAllow, _deadline, v, r, s);
+        IERC20Permit(_token).permit(_msgSender(), address(this), _toAllow, _deadline, v, r, s);
         deposit(_token, _amount);
     }
 

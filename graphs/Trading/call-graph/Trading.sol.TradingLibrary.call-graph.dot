@@ -1,0 +1,18 @@
+strict digraph {
+subgraph cluster_4441_TradingLibrary {
+label = "TradingLibrary"
+"4441_pnl" [label="pnl"]
+"4441_verifyPrice" [label="verifyPrice"]
+"4441_liqPrice" [label="liqPrice"]
+"4441_getLiqPrice" [label="getLiqPrice"]
+"4441_getLiqPrice" -> "4441_liqPrice"
+}subgraph cluster_solidity {
+label = "[Solidity]"
+"abi.encode()" 
+"keccak256(bytes)" 
+"require(bool,string)" 
+"4441_verifyPrice" -> "abi.encode()"
+"4441_verifyPrice" -> "require(bool,string)"
+"4441_verifyPrice" -> "keccak256(bytes)"
+}
+}

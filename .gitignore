@@ -9,3 +9,15 @@ out/
 
 # Dotenv file
 .env
+
+
+# notes
+explored.md
+interfaces.md
+MetaContext.md
+tests.md
+TODO.md
+
+# slither
+output.json
+slither.config.json

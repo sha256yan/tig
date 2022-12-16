@@ -1,0 +1,17 @@
+strict digraph {
+subgraph cluster_5190_Strings {
+label = "Strings"
+"5190_slitherConstructorConstantVariables" [label="slitherConstructorConstantVariables"]
+"5190_toString" [label="toString"]
+"5190_toHexString" [label="toHexString"]
+"5190_toHexString" -> "5190_toHexString"
+}subgraph cluster_solidity {
+label = "[Solidity]"
+"mstore8(uint256,uint256)" 
+"byte(uint256,uint256)" 
+"require(bool,string)" 
+"5190_toString" -> "byte(uint256,uint256)"
+"5190_toHexString" -> "require(bool,string)"
+"5190_toString" -> "mstore8(uint256,uint256)"
+}
+}
